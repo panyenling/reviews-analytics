@@ -1,27 +1,34 @@
+import time
+import progressbar
+#檔案讀取
 data = []
 count = 0
+bar = progressbar.ProgressBar(max_valum=1000000)
 with open('reviews.txt', 'r') as f:
     for line in f:
         data.append(line)
         count += 1
-        if count % 100000 == 0:
-        	print(len(data))
-print('檔案讀取完了,總共有', len(data), '筆資料')
-print(data[0])
+        bar.update(count)
 
+print('檔案讀取完了,總共有', len(data), '筆資料')
+
+#計算留言平均長度
 sum_len = 0
 for d in data:
 	sum_len += len(d)
 print('留言的總長度', sum_len)
 print('留言的平均長度為', sum_len/len(data))
+
+#留言長度篩選
 new = []
 for d in data:
 	if len(d) < 100:
 		new.append(d)
 print('一共有', len(new), '筆留言長度小於100')
-print(new[0])
-print(new[1])
+#print(new[0])
+#print(new[1])
 
+#留言文字篩選
 good = []
 for d in data:
 	if 'good' in d:
@@ -29,6 +36,8 @@ for d in data:
 print('一共有', len(good), '筆留言提到good')
 print(good[0])
 
+#文字計數(字典)
+start_time = time.time()
 wc = {} #word_count
 for d in data:
 	words = d.split()
@@ -40,7 +49,8 @@ for d in data:
 for word in wc:
 	if wc[word] > 1000000:
 		print(word, wc[word])
-
+end_time = time.time()
+print('花了', end_time - start_time, 'seconds')
 print(len(wc))
 
 while True:
@@ -50,26 +60,3 @@ while True:
 	print(word,'出現過的次數為: ', wc[word])
 
 print('感謝使用本查詢功能')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
